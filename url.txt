@@ -1,2 +1,1 @@
-https://ecommerce-insights-dicoding.streamlit.app/
-(Catatan: Ganti URL di atas dengan tautan publik dashboard Streamlit Cloud Anda setelah dideploy dari GitHub)
+https://cae-dicoding-ecommerce-dashboard.streamlit.app/
