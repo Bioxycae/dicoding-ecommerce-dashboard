@@ -66,13 +66,13 @@ def create_delivery_satisfaction_df(df):
 
 def create_rfm_df(df):
     recent_date = df['order_purchase_timestamp'].max() + pd.Timedelta(days=1)
-    rfm_df = df.groupby('customer_unique_id').agg({
-        'order_purchase_timestamp': lambda x: (recent_date - x.max()).days,
-        'order_id': 'nunique',
-        'price': 'sum'
-    }).reset_index()
-    rfm_df.columns = ['customer_unique_id', 'recency', 'frequency', 'monetary']
-    return rfm_df
+    rfm_df = df.groupby('customer_unique_id').agg(
+        max_date=('order_purchase_timestamp', 'max'),
+        frequency=('order_id', 'nunique'),
+        monetary=('price', 'sum')
+    ).reset_index()
+    rfm_df['recency'] = (recent_date - rfm_df['max_date']).dt.days
+    return rfm_df[['customer_unique_id', 'recency', 'frequency', 'monetary']]
 
 def create_bystate_df(df):
     bystate_df = df.groupby('customer_state')['customer_unique_id'].nunique().reset_index()
